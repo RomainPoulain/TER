@@ -6,13 +6,13 @@ import sqlite3
 
 
 COLUMNS    = ['type','key','revision','last_modified','json']
-INPUT_FILE = 'data/small_works.txt'
+INPUT_FILE = '../data/small_works.txt'
 #INPUT_FILE = 'data/ol_dump_authors_2020-02-29.txt'
 #DB_FILE = 'opendata.db'
 #DB_FILE = 'databases.db'
-DB_FILE = 'bdd/databases.db'
+DB_FILE = '../bdd/databases.db'
 #DB_FILE = ":memory:"
-DB_SCHEMA = 'sql/schema-works.sql'
+DB_SCHEMA = '../sql/schema-works.sql'
 
 
 db = sqlite3.connect(DB_FILE)
