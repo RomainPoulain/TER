@@ -21,9 +21,36 @@ c.executescript(open(DB_SCHEMA,'r').read())
 
 for record in csv.DictReader(open(INPUT_FILE,'r'),fieldnames=COLUMNS,delimiter='\t'):
      j = json.loads(record['json'])
+     if record['type'] == 'author':
+          pass
+     elif record['type'] == 'edition':
+          pass 
+     elif record['type'] == 'work':
+          pass
+     else:
+          print("UNK type",record['type'])
      #print(record['key'],j['key'],record['key'] == j['key'],j.get('name'),j.get('birth_date'),j.get('death_date'),j.get('title'),j.get('bio'))
      #c.execute('INSERT INTO AUTHOR VALUES (?,?,?)',[record['key'],j['name'],j.get('birth_date')])
-     c.execute('INSERT INTO EDITION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[record['key'],j.get('title'),j.get('title_prefix'),j.get('subtitle'),j.get('by_statement'),j.get('publish_date'),j.get('copyright_date'),j.get('edition_name'),j.get('physical_dimensions'),j.get('physical_format'),j.get('number_of_pages'),j.get('pagination'),j.get('ocaid'),j.get('publish_country'),j.get('first_sentence'),j.get('weight'),j.get('scan_on_demand'),j.get('translation_of'),j.get('accompanying_material')])
+     c.execute('INSERT INTO EDITION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[
+          record['key'],
+          j.get('title'),
+          j.get('title_prefix'),
+          j.get('subtitle'),
+          j.get('by_statement'),
+          j.get('publish_date'),
+          j.get('copyright_date'),
+          j.get('edition_name'),
+          j.get('physical_dimensions'), 
+          j.get('physical_format'),
+          j.get('number_of_pages'),
+          j.get('pagination'),
+          j.get('ocaid'),
+          j.get('publish_country'),
+          j.get('first_sentence'),
+          j.get('weight'),
+          j.get('scan_on_demand'),
+          j.get('translation_of'),
+          j.get('accompanying_material')])
 
 db.commit()
 #db.close()
