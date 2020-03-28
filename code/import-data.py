@@ -247,28 +247,43 @@ for record in csv.DictReader(open(INPUT_FILE, 'r'), fieldnames=COLUMNS, delimite
     else:
         bio = None
 
-    alternate_names = ""
-    if 'alternate_names' in j:
-        for n in j['alternate_names']:
-            alternate_names = n
-    else:
-        alternate_names = None
 
     uris = ""
+    tab_uris = []
     if 'uris' in j:
         for n in j['uris']:
-            uris = n
+            tab_uris.append(n)
+            uris = str(tab_uris)
     else:
         uris = None
 
-    links_title = ""
-    links_url = ""
-    if 'links' in j:
-        for n in j["links"]:
-            links_url = n['url']
-            links_title = n["title"]
+    alternate_names = ''
+
+    alt = []
+    if 'alternate_names' in j:
+        for n in j['alternate_names']:
+            alt.append(n)
+
+        alternate_names = str(alt)
+
     else:
-        links_url = None
+        alternate_names = None
+
+    maybe = []
+    title = []
+
+    if 'links' in j:
+        for link in j['links']:
+            dico = {'url': link['url']}
+            dico2 = {'title': link['title']}
+            maybe.append(dico['url'])
+            title.append(dico2['title'])
+
+        links = str(maybe)
+        links_title = str(title)
+
+    else:
+        links = None
         links_title = None
 
     c.execute('INSERT INTO AUTHORS VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -286,13 +301,12 @@ for record in csv.DictReader(open(INPUT_FILE, 'r'), fieldnames=COLUMNS, delimite
                j.get('death_date'),
                j.get('date'),
                j.get('wikipedia'),
-               links_url,
+               links,
                links_title])
 db.commit()
 
-
-valeur=[]
-listee=[]
+valeur = []
+listee = []
 req = "select * from AUTHORS"
 result = c.execute(req)
 print(type(result))
@@ -300,22 +314,25 @@ rows = c.fetchall()
 for rowz in rows:
     listee.append((' {1} '.format(rowz[0], rowz[3], )))
 for row in rows:
-    valeur.append((' {1} '.format(row[0], row[1],)))
+    valeur.append((' {1} '.format(row[0], row[1], )))
 
-
-x=0
-liste=[]
+x = 0
+liste = []
 for x in range(len(valeur)):
-    for i in range(x+1,len(valeur)):
-        ed = nltk.edit_distance(valeur[x],valeur[i])
-        dico={"titre":valeur[x],"titre_compare":valeur[i], "distance":ed,"x":x,"i":i}
-        a=((dico["titre"]),"&&",(dico["titre_compare"]),"&&",(dico["distance"]),"&&",(dico["x"]),"&&",(dico["i"]))
+    for i in range(x + 1, len(valeur)):
+        ed = nltk.edit_distance(valeur[x], valeur[i])
+        dico = {"titre": valeur[x], "titre_compare": valeur[i], "distance": ed, "x": x, "i": i}
+        a = (
+            (dico["titre"]), "&&", (dico["titre_compare"]), "&&", (dico["distance"]), "&&", (dico["x"]), "&&",
+            (dico["i"]))
 
-        if ((dico["distance"])<7 and dico["titre"]!= ' None ') and dico["titre_compare"] !=' None ':
-            a=print(dico["titre"],"&&",dico["titre_compare"],"&&",dico["distance"],"&&",dico["x"],"&&",dico["i"])
-            liste.append((dico["titre"],"&&",dico["titre_compare"],"&&",dico["distance"],"&&",dico["x"],"&&",dico["i"]))
+        if ((dico["distance"]) < 7 and dico["titre"] != ' None ') and dico["titre_compare"] != ' None ':
+            a = print(dico["titre"], "&&", dico["titre_compare"], "&&", dico["distance"], "&&", dico["x"], "&&",
+                      dico["i"])
+            liste.append(
+                (dico["titre"], "&&", dico["titre_compare"], "&&", dico["distance"], "&&", dico["x"], "&&", dico["i"]))
             ed2 = nltk.edit_distance(listee[dico["x"]], listee[dico["i"]])
-            print(listee[dico["x"]], listee[dico["i"]],ed2)
+            print(listee[dico["x"]], listee[dico["i"]], ed2)
 """
 
 for record in csv.DictReader(open(INPUT_FILE, 'r'), fieldnames=COLUMNS, delimiter='\t'):
