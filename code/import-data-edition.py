@@ -4,7 +4,7 @@ import json
 import sqlite3
 
 COLUMNS = ['type', 'key', 'revision', 'last_modified', 'json']
-INPUT_FILE = '../data/meduim-editions.txt'
+INPUT_FILE = '../data/small_edition.txt'
 # INPUT_FILE = 'data/ol_dump_authors_2020-02-29.txt'
 # DB_FILE = 'opendata.db'
 # DB_FILE = 'databases.db'
